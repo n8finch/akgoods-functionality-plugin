@@ -1,1 +1,1 @@
-# akgoods-functionality-plugin
+# akgoods-functionality-plugin for akgoods.com
