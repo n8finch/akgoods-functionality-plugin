@@ -39,15 +39,13 @@ function add_category_title_and_description_to_page() {
 add_action( 'woocommerce_before_main_content', 'start_sorting_container', 31 );
 
 function start_sorting_container() {
-	echo '<div class="start_sorting_container">';
-	woocommerce_catalog_ordering();
-	echo '</div> <!--end-->';
+
+	if ( woocommerce_catalog_ordering() ) {
+		echo '<div class="start_sorting_container">';
+		woocommerce_catalog_ordering();
+		echo '</div> <!--end-->';
+	}
 }
-
-
-
-
-
 
 
 add_action( 'woocommerce_archive_description', 'woocommerce_category_image' );
