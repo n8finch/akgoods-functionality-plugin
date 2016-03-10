@@ -15,7 +15,7 @@ function woocommerce_category_sidebar() {
 }
 
 /**
- * Reposition sidebar on categories
+ * Add Category Name and SEO description to top of category page
  */
 
 add_action( 'woocommerce_before_main_content', 'add_category_title_and_description_to_page', 30 );
@@ -35,18 +35,25 @@ function add_category_title_and_description_to_page() {
 }
 
 
-// Reorder product ordering
+/**
+ * Add Catalog ordering Function
+ */
+
 add_action( 'woocommerce_before_main_content', 'start_sorting_container', 31 );
 
 function start_sorting_container() {
 
-	if ( woocommerce_catalog_ordering() ) {
+	if ( is_product_category() ) {
 		echo '<div class="start_sorting_container">';
 		woocommerce_catalog_ordering();
 		echo '</div> <!--end-->';
 	}
 }
 
+
+/**
+ * Add Category Hero Image and Overlay
+ */
 
 add_action( 'woocommerce_archive_description', 'woocommerce_category_image' );
 function woocommerce_category_image() {
@@ -68,6 +75,9 @@ function woocommerce_category_image() {
 	}
 }
 
+/**
+ * Add bottom SEO description
+ */
 
 add_action( 'woocommerce_after_main_content', 'add_description_after_product_loop' );
 
