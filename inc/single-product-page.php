@@ -29,9 +29,7 @@ function woocommerce_single_product_subtitle() {
 		global $wp_query;
 		$post_excerpt = $wp_query->get_queried_object()->post_content;
 
-		echo '<p>'.$post_excerpt.'</p>';
-
-
+		echo '<p>' . $post_excerpt . '</p>';
 
 
 	}
@@ -135,6 +133,40 @@ function add_extra_fields_to_single_product() {
 
           </div>';
 }
+
+
+/**
+ * Remove and Add Pair With and You May Also Like
+ */
+
+
+add_action( 'init', __NAMESPACE__ . '\reposition_pair_with_section' );
+function reposition_pair_with_section() {
+	remove_action( 'woocommerce_after_single_product_summary', 'woocommerce_upsell_display', 15 );
+
+}
+
+add_action( 'akg_woocommerce_footer', 'woocommerce_upsell_display' );
+
+add_action( 'akg_woocommerce_footer', __NAMESPACE__ . '\add_description_after_product_loop', 7 );
+
+function add_description_after_product_loop() {
+	if ( is_product() ) {
+		global $wp_query;
+		$cat    = $wp_query->query['product_cat']; //gets current product's category
+
+//		echo '<pre>';
+//		echo $cat;
+//		echo '</pre>';
+//
+//		echo '<div class="description_after_product_loop">';
+//		echo '</div>';
+
+	}
+
+}
+
+
 
 
 /**
