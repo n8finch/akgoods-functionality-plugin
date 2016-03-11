@@ -136,7 +136,7 @@ function add_extra_fields_to_single_product() {
 
 
 /**
- * Remove and Add Pair With and You May Also Like
+ * Remove and Add Pair With
  */
 
 
@@ -147,26 +147,6 @@ function reposition_pair_with_section() {
 }
 
 add_action( 'akg_woocommerce_footer', 'woocommerce_upsell_display' );
-
-add_action( 'akg_woocommerce_footer', __NAMESPACE__ . '\add_description_after_product_loop', 7 );
-
-function add_description_after_product_loop() {
-	if ( is_product() ) {
-		global $wp_query;
-		$cat    = $wp_query->query['product_cat']; //gets current product's category
-
-//		echo '<pre>';
-//		echo $cat;
-//		echo '</pre>';
-//
-//		echo '<div class="description_after_product_loop">';
-//		echo '</div>';
-
-	}
-
-}
-
-
 
 
 /**
