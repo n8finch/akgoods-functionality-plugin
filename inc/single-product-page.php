@@ -4,7 +4,11 @@
  * Reposition sidebar on single products
  */
 
-add_action( 'woocommerce_sidebar', 'woocommerce_single_product_sidebar', 2 );
+
+namespace single_product_page;
+
+
+add_action( 'woocommerce_sidebar', __NAMESPACE__ . '\woocommerce_single_product_sidebar', 2 );
 function woocommerce_single_product_sidebar() {
 	if ( is_product() ) {
 		echo '<div class="shop-sidebar">';
@@ -17,21 +21,28 @@ function woocommerce_single_product_sidebar() {
  * Add sub-title to Product Page
  */
 
-add_action( 'woocommerce_single_product_summary', 'woocommerce_single_product_subtitle', 6 );
+add_action( 'woocommerce_single_product_summary', __NAMESPACE__ . '\woocommerce_single_product_subtitle', 6 );
 function woocommerce_single_product_subtitle() {
 	if ( is_product() ) {
 		echo '<h3 class="single_product_subtitle">' . the_field( 'single_product_subtitle' ) . '</h3>';
+
+		global $wp_query;
+		$post_excerpt = $wp_query->get_queried_object()->post_content;
+
+		echo '<p>'.$post_excerpt.'</p>';
+
+
+
+
 	}
 }
 
 
 /**
- * Move Compare and Wishlist buttons
+ * Add social sharing buttons
  */
-remove_action( 'woocommerce_single_product_summary', array( 'YITH_Woocompare_Helper', 'add_compare_link' ), 35 );
-// from /yith-woocommerce-compare/includes/class.yith-woocompare-frontend.php
 
-add_action( 'woocommerce_product_thumbnails', 'add_social_compare_wishlist_buttons' );
+add_action( 'woocommerce_product_thumbnails', __NAMESPACE__ . '\add_social_compare_wishlist_buttons' );
 function add_social_compare_wishlist_buttons() {
 	if ( is_product() ) {
 		echo '<div class="social-compare-wishlist-section">
@@ -47,7 +58,45 @@ function add_social_compare_wishlist_buttons() {
 	}
 }
 
-add_action( 'woocommerce_after_add_to_cart_button', 'add_extra_fields_to_single_product' );
+/**
+ * Unregisters the add_compare_link for the YITH WooCompare plugin, adds it to under the
+ */
+
+add_action( 'init', __NAMESPACE__ . '\unregister_yith_woocompare_add_compare_link' );
+
+function unregister_yith_woocompare_add_compare_link() {
+	if ( is_admin() ) {
+		return;
+	}
+	global $yith_woocompare;
+
+	remove_action( 'woocommerce_single_product_summary', array( $yith_woocompare->obj, 'add_compare_link' ), 35 );
+	add_action( 'woocommerce_product_thumbnails', array( $yith_woocompare->obj, 'add_compare_link' ), 35 );
+
+}
+
+/**
+ * Unregisters the add_compare_link for the YITH WooCompare plugin, adds it to under the
+ */
+
+add_action( 'woocommerce_product_thumbnails', __NAMESPACE__ . '\add_compare_and_wishlist_buttons_start', 34 );
+
+function add_compare_and_wishlist_buttons_start() {
+
+	echo '<div class="compare_and_wishlist_buttons">';
+
+}
+
+add_action( 'woocommerce_product_thumbnails', __NAMESPACE__ . '\add_compare_and_wishlist_buttons_end', 36 );
+
+function add_compare_and_wishlist_buttons_end() {
+
+
+	echo '</div>';
+}
+
+
+add_action( 'woocommerce_after_add_to_cart_button', __NAMESPACE__ . '\add_extra_fields_to_single_product' );
 function add_extra_fields_to_single_product() {
 
 	global $wp_query;
@@ -62,39 +111,26 @@ function add_extra_fields_to_single_product() {
 
 
 	echo '<div class="accordion" id="product-description-accordion">
-            <h3>Product Description</h3>
-            <div itemprop="description">
-              <p>' . $post_excerpt .'</p>
+            <div class="single-product-custom-fields-titles" data-toggle="product-description"><h3>Product Description <span class="fa-float-right fa fa-chevron-down"></span></h3></div>
+            <div id="product-description" class="single-product-custom-fields"><p>' . $post_excerpt . '</p>
             </div>
-            <h3>Shape</h3>
-            <div>
-              <p>' . $shape_field . '
-              </p>
+            <div class="single-product-custom-fields-titles" data-toggle="shape"><h3>Shape <span class="fa-float-right fa fa-chevron-down"></span></h3></div>
+            <div id="shape" class="single-product-custom-fields">' . $shape_field . '
             </div>
-            <h3>Material Options</h3>
-            <div>
-              <p>' . $material_field . '
-              </p>
+            <div class="single-product-custom-fields-titles" data-toggle="material-options"><h3>Material Options <span class="fa-float-right fa fa-chevron-down"></span></h3></div>
+            <div id="material-options" class="single-product-custom-fields">' . $material_field . '
             </div>
-            <h3>Dimensions</h3>
-            <div>
-              <p>' . $dimensions_field . '
-              </p>
+            <div class="single-product-custom-fields-titles" data-toggle="dimensions"><h3>Dimensions <span class="fa-float-right fa fa-chevron-down"></span></h3></div>
+            <div id="dimensions" class="single-product-custom-fields">' . $dimensions_field . '
             </div>
-            <h3>Finish</h3>
-            <div>
-              <p>' . $finish_field . '
-              </p>
+            <div class="single-product-custom-fields-titles" data-toggle="finsih"><h3>Finish <span class="fa-float-right fa fa-chevron-down"></span></h3></div>
+            <div id="finsih" class="single-product-custom-fields">' . $finish_field . '
             </div>
-            <h3>Technical Information</h3>
-            <div>
-              <p>' . $technical_field . '
-              </p>
+            <div class="single-product-custom-fields-titles" data-toggle="technical-information"><h3>Technical Information <span class="fa-float-right fa fa-chevron-down"></span></h3></div>
+            <div id="technical-information" class="single-product-custom-fields">' . $technical_field . '
             </div>
-            <h3>Enquire About This Product</h3>
-            <div>
-              <p>
-              </p>
+            <div class="single-product-custom-fields-titles" data-toggle="enquire-about-this"><h3>Enquire About This Product <span class="fa-float-right fa fa-chevron-down"></span></h3></div>
+            <div id="enquire-about-this" class="single-product-custom-fields">
             </div>
 
           </div>';
@@ -105,7 +141,7 @@ function add_extra_fields_to_single_product() {
  * Remove Reviews from Single Products
  */
 
-add_filter( 'woocommerce_product_tabs', 'wcs_woo_remove_reviews_tab', 98 );
+add_filter( 'woocommerce_product_tabs', __NAMESPACE__ . '\wcs_woo_remove_reviews_tab', 98 );
 function wcs_woo_remove_reviews_tab( $tabs ) {
 	unset( $tabs['reviews'] );
 
