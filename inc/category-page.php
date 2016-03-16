@@ -61,15 +61,39 @@ function woocommerce_category_image() {
 		global $wp_query;
 		$cat             = $wp_query->get_queried_object(); //gets category meta
 		$thumbnail_id    = get_woocommerce_term_meta( $cat->term_id, 'thumbnail_id', true ); //gets thumbnail ID
+
+//		echo '<pre>';
+//		print var_dump($cat);
+//		echo '</pre>';
+
+
 		$cat_name        = $cat->name; //gets termID
 		$cat_description = $cat->description; //gets termID
 		$image           = wp_get_attachment_url( $thumbnail_id ); //gets image thumbnail
 		if ( $image ) {
-			echo '<div class="category-hero" style="background-image: url(' . $image . ');">';
-			echo '<div class="category-description-left">' . $cat_description . ' ';
-			echo '<div class="category-description-button">View All<br/>' . $cat_name . '</div>';
-			echo '</div>';
-			echo '</div>';
+			echo '<div class="category-hero-outer">';
+				echo '<div class="category-hero" style="background-image: url(' . $image . ');">';
+					echo '<div class="category-description-left">' . $cat_description . ' ';
+						echo '<div class="category-description-button">View All<br/>' . $cat_name . '</div>';
+					echo '</div>';//end category description
+				echo '</div>';//end category hero
+
+				echo '<div class="category-hero-right">';
+					echo '<a href="#"><div class="category-hero-view-all">';
+						echo '<h3 class="category-hero-right-titles">View All<br/>' . $cat_name . '</h3>';
+
+					echo '</div></a>';
+
+					echo '<a href="/shop/sale/"><div class="category-hero-sale">';
+						echo '<h3 class="category-hero-right-titles">Sale</h3>';
+
+					echo '</div></a>';
+
+				echo '</div>';
+
+
+
+			echo '</div>';//end category outer
 
 		}
 	}
@@ -91,4 +115,5 @@ function add_description_after_product_loop() {
 		echo '</div>';
 	}
 }
+
 
