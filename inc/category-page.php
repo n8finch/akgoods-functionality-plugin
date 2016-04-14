@@ -4,6 +4,8 @@
  * Reposition sidebar on categories
  */
 
+remove_action( 'genesis_before_sidebar_widget_area', 'jessica_child_do_sidebar', 999);
+
 add_action( 'woocommerce_before_shop_loop', 'woocommerce_category_sidebar', 2 );
 
 function woocommerce_category_sidebar() {
@@ -39,16 +41,44 @@ function add_category_title_and_description_to_page() {
  * Add Catalog ordering Function
  */
 
-add_action( 'woocommerce_before_main_content', 'start_sorting_container', 31 );
+add_action( 'woocommerce_before_shop_loop', 'start_sorting_container', 26 );
 
 function start_sorting_container() {
 
-	if ( is_product_category() ) {
-		echo '<div class="start_sorting_container">';
-		woocommerce_catalog_ordering();
-		echo '</div> <!--end-->';
-	}
+	if ( ! woocommerce_products_will_display() ) :
+		return;
+	endif;
+
+	echo '<div class="start_sorting_container">';
 }
+
+add_action( 'woocommerce_before_shop_loop', 'do_the_woocommerce_sorting_container', 28 );
+
+function do_the_woocommerce_sorting_container() {
+
+	if ( ! woocommerce_products_will_display() ) :
+		return;
+	endif;
+
+//	if ( is_product_category() ) {
+//		echo '<div class="start_sorting_container">';
+		woocommerce_catalog_ordering();
+//		echo '</div> <!--end-->';
+//	}
+}
+
+add_action( 'woocommerce_before_shop_loop', 'end_sorting_container', 30 );
+
+function end_sorting_container() {
+
+	if ( ! woocommerce_products_will_display() ) :
+		return;
+	endif;
+
+	echo '</div> <!--end-->';
+}
+
+
 
 
 /**
@@ -57,6 +87,11 @@ function start_sorting_container() {
 
 add_action( 'woocommerce_archive_description', 'woocommerce_category_image' );
 function woocommerce_category_image() {
+
+	if ( woocommerce_products_will_display() ) :
+		return;
+	endif;
+
 	if ( is_product_category() ) {
 		global $wp_query;
 		$cat             = $wp_query->get_queried_object(); //gets category meta
@@ -79,7 +114,7 @@ function woocommerce_category_image() {
 				echo '</div>';//end category hero
 
 				echo '<div class="category-hero-right">';
-					echo '<a href="#"><div class="category-hero-view-all">';
+					echo '<a href="?view=all"><div class="category-hero-view-all">';
 						echo '<h3 class="category-hero-right-titles">View All<br/>' . $cat_name . '</h3>';
 
 					echo '</div></a>';
@@ -98,6 +133,15 @@ function woocommerce_category_image() {
 		}
 	}
 }
+
+//add_filter('loop_shop_per_page', 'wg_view_all_products');
+//
+//function wg_view_all_products(){
+//	if($_GET['view'] === 'all'){
+//		return '9999';
+//	}
+//}
+
 
 /**
  * Add bottom SEO description
