@@ -114,15 +114,22 @@ function woocommerce_category_image() {
 				echo '</div>';//end category hero
 
 				echo '<div class="category-hero-right">';
-					echo '<a href="?view=all"><div class="category-hero-view-all">';
+					echo '<a href="?view=all"><div class="category-hero-view-all desktop-only">';
 						echo '<h3 class="category-hero-right-titles">View All<br/>' . $cat_name . '</h3>';
 
 					echo '</div></a>';
 
-					echo '<a href="/shop/sale/"><div class="category-hero-sale">';
-						echo '<h3 class="category-hero-right-titles">Sale</h3>';
+					if( is_product_category('fireplaces-mantels')) {
+						echo '<a href="/shop/sale/"><div class="category-hero-sale">';
+							echo '<h3 class="category-hero-right-titles">Sale</h3>';
 
-					echo '</div></a>';
+						echo '</div></a>';
+					} else {
+						echo '<a href="/shop/sale/"><div class="category-hero-sale desktop-only">';
+							echo '<h3 class="category-hero-right-titles">Sale</h3>';
+
+						echo '</div></a>';
+					}
 
 				echo '</div>';
 

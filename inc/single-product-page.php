@@ -105,7 +105,7 @@ function contact_box_above_custom_fields() {
 	$email       = genesis_get_option( 'wsm_header_email', 'jessica-settings' );
 
 	echo '<div class="knowledgeable-team-container">';
-	echo '<p>Our knowledgeable team is here to help with a phone and email.</p>';
+	echo '<p>Our knowledgeable team is here to help by phone and email.</p>';
 	echo '<span class="knowledgeable-team fa fa-phone"></span><span class="knowledgeable-team-phone"> '.$phone.'</span> | ';
 	echo '<span class="knowledgeable-team fa fa-envelope"></span> '.$email.' ';
 	echo '</div>';
