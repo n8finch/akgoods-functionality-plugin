@@ -72,7 +72,6 @@ function unregister_yith_woocompare_add_compare_link() {
 //	add_action( 'woocommerce_product_thumbnails', array( $yith_woocompare->obj, 'add_compare_link' ), 35 );
 	add_action( 'woocommerce_after_add_to_cart_button', array( $yith_woocompare->obj, 'add_compare_link' ), 34 );
 
-
 }
 
 /**
@@ -101,13 +100,13 @@ add_action( 'woocommerce_single_product_summary', __NAMESPACE__ . '\contact_box_
 
 function contact_box_above_custom_fields() {
 
-	$phone       = genesis_get_option( 'wsm_header_phone', 'jessica-settings' );
-	$email       = genesis_get_option( 'wsm_header_email', 'jessica-settings' );
+	$phone = genesis_get_option( 'wsm_header_phone', 'jessica-settings' );
+	$email = genesis_get_option( 'wsm_header_email', 'jessica-settings' );
 
 	echo '<div class="knowledgeable-team-container">';
-	echo '<p>Our knowledgeable team is here to help by phone and email.</p>';
-	echo '<span class="knowledgeable-team fa fa-phone"></span><span class="knowledgeable-team-phone"> '.$phone.'</span> | ';
-	echo '<span class="knowledgeable-team fa fa-envelope"></span> '.$email.' ';
+	echo '<p>Our knowledgeable team is here<br/>to help by phone and email.</p>';
+	echo '<span class="knowledgeable-team fa fa-phone"></span><span class="knowledgeable-team-phone"> ' . $phone . '</span> | ';
+	echo '<span class="knowledgeable-team fa fa-envelope"></span> ' . $email . ' ';
 	echo '</div>';
 
 }
@@ -139,7 +138,7 @@ function add_extra_fields_to_single_product() {
             <div id="material-options" class="single-product-custom-fields">';
 	// . $material_field;
 
-	wp_nav_menu( array('menu' => $material_field ) );
+	wp_nav_menu( array( 'menu' => $material_field ) );
 
 	echo '</div>
             <div class="single-product-custom-fields-titles" data-toggle="dimensions"><h3>Dimensions <span class="fa-float-right fa fa-chevron-down"></span></h3></div>
@@ -147,12 +146,12 @@ function add_extra_fields_to_single_product() {
             </div>
             <div class="single-product-custom-fields-titles" data-toggle="finsih"><h3>Finish <span class="fa-float-right fa fa-chevron-down"></span></h3></div>
             <div id="finsih" class="single-product-custom-fields">';
-	wp_nav_menu( array('menu' => $finish_field ) );
+	wp_nav_menu( array( 'menu' => $finish_field ) );
 
 	echo '</div>          
             <div class="single-product-custom-fields-titles" data-toggle="technical-information"><h3>Technical Information <span class="fa-float-right fa fa-chevron-down"></span></h3></div>
             <div id="technical-information" class="single-product-custom-fields">';
-	wp_nav_menu( array('menu' => 'Technical Information' ) );
+	wp_nav_menu( array( 'menu' => 'Technical Information' ) );
 
 	echo '</div>           
             <div class="single-product-custom-fields-titles" data-toggle="enquire-about-this"><h3>Enquire About This Product <span class="fa-float-right fa fa-chevron-down"></span></h3></div>

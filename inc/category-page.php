@@ -4,7 +4,7 @@
  * Reposition sidebar on categories
  */
 
-remove_action( 'genesis_before_sidebar_widget_area', 'jessica_child_do_sidebar', 999);
+remove_action( 'genesis_before_sidebar_widget_area', 'jessica_child_do_sidebar', 999 );
 
 add_action( 'woocommerce_before_shop_loop', 'woocommerce_category_sidebar', 2 );
 
@@ -62,7 +62,7 @@ function do_the_woocommerce_sorting_container() {
 
 //	if ( is_product_category() ) {
 //		echo '<div class="start_sorting_container">';
-		woocommerce_catalog_ordering();
+	woocommerce_catalog_ordering();
 //		echo '</div> <!--end-->';
 //	}
 }
@@ -79,8 +79,6 @@ function end_sorting_container() {
 }
 
 
-
-
 /**
  * Add Category Hero Image and Overlay
  */
@@ -94,11 +92,14 @@ function woocommerce_category_image() {
 
 	if ( is_product_category() ) {
 		global $wp_query;
-		$cat             = $wp_query->get_queried_object(); //gets category meta
-		$thumbnail_id    = get_woocommerce_term_meta( $cat->term_id, 'thumbnail_id', true ); //gets thumbnail ID
+		$cat           = $wp_query->get_queried_object(); //gets category meta
+		$cat_slug      = $cat->slug;
+		$view_all_link = '/shop/' . $cat_slug . '/all-' . $cat_slug . '/';
+		$sale_link     = '/shop/' . $cat_slug . '/sale-' . $cat_slug . '/';
+		$thumbnail_id  = get_woocommerce_term_meta( $cat->term_id, 'thumbnail_id', true ); //gets thumbnail ID
 
 //		echo '<pre>';
-//		print var_dump($cat);
+//		print var_dump($view_all_link);
 //		echo '</pre>';
 
 
@@ -107,32 +108,31 @@ function woocommerce_category_image() {
 		$image           = wp_get_attachment_url( $thumbnail_id ); //gets image thumbnail
 		if ( $image ) {
 			echo '<div class="category-hero-outer">';
-				echo '<div class="category-hero" style="background-image: url(' . $image . ');">';
-					echo '<div class="category-description-left">' . $cat_description . ' ';
-						echo '<div class="category-description-button">View All<br/>' . $cat_name . '</div>';
-					echo '</div>';//end category description
-				echo '</div>';//end category hero
+			echo '<a href="' . $view_all_link . '"><div class="category-hero" style="background-image: url(' . $image . ');">';
+			echo '<div class="category-description-left">' . $cat_description . ' ';
+			echo '<div class="category-description-button">View All<br/>' . $cat_name . '</div>';
+			echo '</div>';//end category description
+			echo '</div></a>';//end category hero
 
-				echo '<div class="category-hero-right">';
-					echo '<a href="?view=all"><div class="category-hero-view-all desktop-only">';
-						echo '<h3 class="category-hero-right-titles">View All<br/>' . $cat_name . '</h3>';
+			echo '<div class="category-hero-right">';
+			echo '<a href="' . $view_all_link . '"><div class="category-hero-view-all desktop-only">';
+			echo '<h3 class="category-hero-right-titles">View All<br/>' . $cat_name . '</h3>';
 
-					echo '</div></a>';
+			echo '</div></a>';
 
-					if( is_product_category('fireplaces-mantels')) {
-						echo '<a href="/shop/sale/"><div class="category-hero-sale">';
-							echo '<h3 class="category-hero-right-titles">Sale</h3>';
+			if ( is_product_category( 'fireplaces-mantels' ) ) {
+				echo '<a href="' . $sale_link . '"><div class="category-hero-sale">';
+				echo '<h3 class="category-hero-right-titles">Sale</h3>';
 
-						echo '</div></a>';
-					} else {
-						echo '<a href="/shop/sale/"><div class="category-hero-sale desktop-only">';
-							echo '<h3 class="category-hero-right-titles">Sale</h3>';
+				echo '</div></a>';
+			} else {
+				echo '<a href="' . $sale_link . '"><div class="category-hero-sale desktop-only">';
+				echo '<h3 class="category-hero-right-titles">Sale</h3>';
 
-						echo '</div></a>';
-					}
+				echo '</div></a>';
+			}
 
-				echo '</div>';
-
+			echo '</div>';
 
 
 			echo '</div>';//end category outer
@@ -168,3 +168,12 @@ function add_description_after_product_loop() {
 }
 
 
+
+
+
+add_filter( 'wpseo_separator_options', 'addmyfilter' );
+
+function addmyfilter ($separators) {
+	array_push($separators, " ");
+	return $separators;
+}
