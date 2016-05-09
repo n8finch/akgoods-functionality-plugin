@@ -92,14 +92,18 @@ function woocommerce_category_image() {
 
 	if ( is_product_category() ) {
 		global $wp_query;
-		$cat           = $wp_query->get_queried_object(); //gets category meta
-		$cat_slug      = $cat->slug;
-		$view_all_link = '/shop/' . $cat_slug . '/all-' . $cat_slug . '/';
-		$sale_link     = '/shop/' . $cat_slug . '/sale-' . $cat_slug . '/';
-		$thumbnail_id  = get_woocommerce_term_meta( $cat->term_id, 'thumbnail_id', true ); //gets thumbnail ID
+		$cat               = $wp_query->get_queried_object(); //gets category meta
+		$cat_slug          = $cat->slug;
+		$view_all_link     = '/shop/' . $cat_slug . '/all-' . $cat_slug . '/';
+		$sale_link         = '/shop/' . $cat_slug . '/sale-' . $cat_slug . '/';
+		$thumbnail_id      = get_woocommerce_term_meta( $cat->term_id, 'thumbnail_id', true ); //gets thumbnail ID
+		$termID            = $cat->term_id; //gets termID
+		$brown_button_text = get_field( 'brown_button_text', 'product_cat_' . $termID );
+		$brown_button_link = get_field( 'brown_button_link', 'product_cat_' . $termID );
+
 
 //		echo '<pre>';
-//		print var_dump($view_all_link);
+//		print var_dump( $brown_button_text );
 //		echo '</pre>';
 
 
@@ -108,9 +112,9 @@ function woocommerce_category_image() {
 		$image           = wp_get_attachment_url( $thumbnail_id ); //gets image thumbnail
 		if ( $image ) {
 			echo '<div class="category-hero-outer">';
-			echo '<a href="' . $view_all_link . '"><div class="category-hero" style="background-image: url(' . $image . ');">';
+			echo '<a href="/shop/' . $brown_button_link . '"><div class="category-hero" style="background-image: url(' . $image . ');">';
 			echo '<div class="category-description-left">' . $cat_description . ' ';
-			echo '<div class="category-description-button">View All<br/>' . $cat_name . '</div>';
+			echo '<div class="category-description-button">' . $brown_button_text . '</div>';
 			echo '</div>';//end category description
 			echo '</div></a>';//end category hero
 
@@ -168,12 +172,10 @@ function add_description_after_product_loop() {
 }
 
 
-
-
-
 add_filter( 'wpseo_separator_options', 'addmyfilter' );
 
-function addmyfilter ($separators) {
-	array_push($separators, " ");
+function addmyfilter( $separators ) {
+	array_push( $separators, " " );
+
 	return $separators;
 }
