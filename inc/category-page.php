@@ -112,7 +112,7 @@ function woocommerce_category_image() {
 		$image           = wp_get_attachment_url( $thumbnail_id ); //gets image thumbnail
 		if ( $image ) {
 			echo '<div class="category-hero-outer">';
-			echo '<a href="/shop/' . $brown_button_link . '"><div class="category-hero" style="background-image: url(' . $image . ');">';
+			echo '<a href="/shop' . $brown_button_link . '"><div class="category-hero" style="background-image: url(' . $image . ');">';
 			echo '<div class="category-description-left">' . $cat_description . ' ';
 			echo '<div class="category-description-button">' . $brown_button_text . '</div>';
 			echo '</div>';//end category description

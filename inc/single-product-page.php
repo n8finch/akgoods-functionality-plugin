@@ -8,6 +8,14 @@
 namespace single_product_page;
 
 
+add_action( 'woocommerce_before_main_content', __NAMESPACE__ . '\add_return_to_previous_page', 19);
+function add_return_to_previous_page() {
+	if ( is_product() ) {
+		echo '<a class="back-history" href="javascript: history.go(-1)">Return to Previous Page</a>';
+	}
+}
+
+
 add_action( 'woocommerce_sidebar', __NAMESPACE__ . '\woocommerce_single_product_sidebar', 2 );
 function woocommerce_single_product_sidebar() {
 	if ( is_product() ) {
@@ -24,13 +32,15 @@ function woocommerce_single_product_sidebar() {
 add_action( 'woocommerce_single_product_summary', __NAMESPACE__ . '\woocommerce_single_product_subtitle', 6 );
 function woocommerce_single_product_subtitle() {
 	if ( is_product() ) {
-		echo '<h3 class="single_product_subtitle">' . the_field( 'single_product_subtitle' ) . '</h3>';
+
+		$single_product_subtitle = get_field( 'single_product_subtitle' );
+
+		echo '<h3 class="single-product-subtitle">' . $single_product_subtitle . '</h3>';
 
 		global $wp_query;
 		$post_excerpt = $wp_query->get_queried_object()->post_content;
 
 		echo '<p>' . $post_excerpt . '</p>';
-
 
 	}
 }
@@ -104,9 +114,9 @@ function contact_box_above_custom_fields() {
 	$email = genesis_get_option( 'wsm_header_email', 'jessica-settings' );
 
 	echo '<div class="knowledgeable-team-container">';
-	echo '<p>Our knowledgeable team is here<br/>to help by phone and email.</p>';
+	echo '<p>Call or Email our knowledgeable team with questions.</p>';
 	echo '<span class="knowledgeable-team fa fa-phone"></span><span class="knowledgeable-team-phone"> ' . $phone . '</span> | ';
-	echo '<span class="knowledgeable-team fa fa-envelope"></span> ' . $email . ' ';
+	echo '<a href="mailto:info@akgoods.com"><span class="knowledgeable-team fa fa-envelope"></span> ' . $email . '</a>';
 	echo '</div>';
 
 }
