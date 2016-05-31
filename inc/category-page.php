@@ -90,7 +90,7 @@ function woocommerce_category_image() {
 		return;
 	endif;
 
-	if ( is_product_category() ) {
+	if ( is_product_category() && !is_product_category('sale') ) {
 		global $wp_query;
 		$cat               = $wp_query->get_queried_object(); //gets category meta
 		$cat_slug          = $cat->slug;
